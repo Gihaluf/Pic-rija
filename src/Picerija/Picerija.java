@@ -18,16 +18,16 @@ public class Picerija {
  Izmantot OOP principus
  Uzglabāt adresi, tālruni, vādu personai
  */
-	public static double skaitlaParbaude(String zinojums, double min, double max, String noklusejums) {
+	public static int skaitlaParbaude(String zinojums, double min, double max, String noklusejums) {
 		String ievade;
-		Double skaitlis;
+		int skaitlis;
 		while(true) {
 			ievade = (String)JOptionPane.showInputDialog(null, zinojums, 
 					"Datu ievade", JOptionPane.INFORMATION_MESSAGE, null, null, noklusejums); 
 			if(ievade == null)
-				return -1.0;
+				return -1;
 			try {
-				skaitlis = Double.parseDouble(ievade);
+				skaitlis = Integer.parseInt(ievade);
 				if(skaitlis < min || skaitlis > max) {
 					JOptionPane.showMessageDialog(null, 
 					"Norādīts nederīgs skaitlis", "Nekorekti dati",
@@ -49,6 +49,10 @@ public class Picerija {
 		String[] darbibas = {"Pasūtīt picu", "Apskatīt pasūtījumus", "Apturēt"};
 		String[] darbibas1 = {"Gatavās picas", "Pašu taisīta", "Atgriezties"};
 		String[] gatavaspicas = {"Studentu", "Pepperoni", "Havaju", "Ferrara"};
+		String[] pizm = {"30", "40"};
+		String[] atbildes = {"Jā", "Nē"};
+		
+		boolean uzVietas;
 		do {
 			izvele = (String) JOptionPane.showInputDialog(null, "Izvēlieties darbību:\n"
 					+ "Pasūtīt picu\n"
@@ -66,6 +70,14 @@ public class Picerija {
 						+ "Atgriezties","Izvēle", JOptionPane.QUESTION_MESSAGE ,null, darbibas1, darbibas1[0]);
 				if(izvele == "Atgriezties")
 					break;
+				/* uz vietas vai lidzas jaizdoma vel
+				 = (String) JOptionPane.showInputDialog(null, 
+						":\n"
+						+ "Gatavās picas\n"
+						+ "Pašu taisīta\n"
+						+ "Atgriezties","Izvēle", JOptionPane.QUESTION_MESSAGE ,null, darbibas1, darbibas1[0]);
+				*/
+				
 				switch(izvele) {
 				case "Gatavās picas":
 					izvele = (String) JOptionPane.showInputDialog(null, 
@@ -83,7 +95,6 @@ public class Picerija {
 								+ "\nCīsiņi, mocarella, kūpināts bekons, tomāti, auksti\n"
 								+ "kausēts kūpinātais siers, Cēzara mērce, pētersīļi,\n"
 								+ "picas mērce, eļļas un ķiploku mērce, oregano\n"
-							
 							,"Edienkarte:", JOptionPane.QUESTION_MESSAGE ,null, gatavaspicas, gatavaspicas[0]);
 					if(izvele == null)
 						izvele = "Atgriezties";
@@ -91,7 +102,14 @@ public class Picerija {
 					case "Studentu":
 						Picas.add("Studentu");
 						String piedevas = "Vārīts cūkgaļas šķiņķis, cīsiņi, mocarella";
-						int izmers = 
+						int izmers = Integer.parseInt((String) JOptionPane.showInputDialog(null, 
+								"Izvēlieties picas izmēru:"
+								+ "\n30\n42", "Picas izmērs",
+								JOptionPane.QUESTION_MESSAGE, null, pizm, pizm[0]));
+						String merce = (String) JOptionPane.showInputDialog(null, 
+								"Vai vēlaties pievienot kādu papildus mērci?"
+								+ "\nĶiploku mērce\nGurķu mērce\nBBQ mērce\nVai nekādu?", 
+								"Papildus mērce", JOptionPane.QUESTION_MESSAGE);
 						break;
 					}
 					break;
