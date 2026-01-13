@@ -34,5 +34,11 @@ public class Pica {
 		this.gatava = gatava;
 		return gatava;
 	}
-
+	
+	public String PicasApr() {
+		return "Picas izmērs: "+izmers+"cm"
+			 + "\nPiedevas: "+piedevas
+			 + "\nMērces: "+merces
+			 + "\nCena: "+cena+" EUR.";
+	}
 }
