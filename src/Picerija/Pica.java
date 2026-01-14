@@ -1,21 +1,25 @@
 package Picerija;
 
 public class Pica {
-	private boolean gatava;
+	private boolean gatava, uzvietas;
 	private String piedevas, merces;
 	private int izmers; 
 	private double cena;
 	
 	public Pica(boolean gatava, String piedevas,
-			int izmers, double cena, String merces) {
+			int izmers, double cena, String merces, boolean uzvietas) {
 		this.gatava = gatava;
 		this.piedevas = piedevas;
 		this.izmers = izmers;
 		this.cena = cena;
 		this.merces = merces;
+		this.uzvietas = uzvietas;
 	}
 	public boolean getGatava() {
 		return gatava;
+	}
+	public boolean getUzvietas() {
+		return uzvietas;
 	}
 	public String getPiedevas() {
 		return piedevas;
@@ -39,6 +43,9 @@ public class Pica {
 		return "Picas izmērs: "+izmers+"cm"
 			 + "\nPiedevas: "+piedevas
 			 + "\nMērces: "+merces
-			 + "\nCena: "+cena+" EUR.";
+			 + "\nCena: "+cena+" EUR." 
+			 + "\nUz vietas: "+((uzvietas) ? "Jā" : "Nē")
+			 + "\nGatava: "+((gatava) ? "Jā" : "Nē");
+		
 	}
 }

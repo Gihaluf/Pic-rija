@@ -45,13 +45,16 @@ public class Picerija {
 	}
 	public static void main(String[] args) {
 		Queue<String> Picas = new LinkedList<>();
-		String izvele;
-		String[] darbibas = {"Pasūtīt picu", "Apskatīt pasūtījumus", "Apturēt"};
-		String[] darbibas1 = {"Gatavās picas", "Pašu taisīta", "Atgriezties"};
-		String[] gatavaspicas = {"Studentu", "Pepperoni", "Havaju", "Ferrara"};
-		String[] pizm = {"30", "40"};
-		String[] atbildes = {"Jā", "Nē"};
 		
+		String izvele, vards, piedevas, merce;
+		int izmers;
+		String[] darbibas = {"Pasūtīt picu", "Apskatīt pasūtījumus", "Apturēt"};
+		String[] darbibas1 = {"Gatavās picas",/* "Pašu taisīta",*/"Atgriezties"};
+		String[] gatavaspicas = {"Studentu", "Pepperoni", "Havaju", "Ferrara"};
+		String[] pizm = {"30", "42"};
+		String[] merces = {"Ķiploku", "Gurķu", "BBQ", "Nekādu"};
+		String[] atbildes = {"Jā", "Nē"};
+		double cena = 0;
 		boolean uzVietas;
 		do {
 			izvele = (String) JOptionPane.showInputDialog(null, "Izvēlieties darbību:\n"
@@ -66,51 +69,110 @@ public class Picerija {
 				izvele = (String) JOptionPane.showInputDialog(null, 
 						"Izvēlieties darbību:\n"
 						+ "Gatavās picas\n"
-						+ "Pašu taisīta\n"
+						//+ "Pašu taisīta\n"
 						+ "Atgriezties","Izvēle", JOptionPane.QUESTION_MESSAGE ,null, darbibas1, darbibas1[0]);
-				if(izvele == "Atgriezties")
+				if(izvele == "Atgriezties" || izvele == null) {
+					izvele = "Atgriezties";
 					break;
-				/* uz vietas vai lidzas jaizdoma vel
-				 = (String) JOptionPane.showInputDialog(null, 
-						":\n"
-						+ "Gatavās picas\n"
-						+ "Pašu taisīta\n"
-						+ "Atgriezties","Izvēle", JOptionPane.QUESTION_MESSAGE ,null, darbibas1, darbibas1[0]);
-				*/
+				}
+				piedevas = "";
+				izmers = 0;
+				merce = "";
+				cena = 0;
+				uzVietas = JOptionPane.showOptionDialog(null, 
+						"Vai pica tiks ēsta uz vietas?"
+						+ "\nPiegāde ir 3.50 EUR", 
+						"Pasūtījuma veids", 
+						JOptionPane.YES_NO_OPTION, 
+						JOptionPane.QUESTION_MESSAGE, 
+						null, atbildes, atbildes[1]) == JOptionPane.YES_OPTION;
+				if(!uzVietas) {
+					cena += 3.5; 
+				}
 				
 				switch(izvele) {
 				case "Gatavās picas":
 					izvele = (String) JOptionPane.showInputDialog(null, 
-							"\nStudentu: "
+							"\nStudentu : "
 								+ "\nVārīts cūkgaļas šķiņķis, cīsiņi, \n"
-								+ "mocarella, picas mērce, eļļas un ķiploku mērce, oregano\n"
+								+ "mocarella, picas mērce, \neļļas un ķiploku mērce, oregano\n"
+								+ "13.99 EUR 30cm\n"
+								+ "17.99 EUR 42cm\n"
+								
 							+"\nPepperoni: "
 								+ "\nSalami \"Pepperoni\", mocarella, kūpināts kausētais siers, \n"
 								+ "\"Taco\" mērce, sīpolu čipsi, rukola, picas mērce, "
-								+ "eļļas un ķiploku mērce, oregano\n"
+								+ "\neļļas un ķiploku mērce, oregano\n"
+								+ "10.99 EUR 30cm\n"
+								+ "14.99 EUR 42cm\n"
+								
 							+"\nHavaju: "
 								+ "\nVārīts cūkgaļas šķiņķis, mocarella, konservēti ananasi, \n"
 								+ "picas mērce, eļļas un ķiploku mērce, oregano\n"
+								+ "14.99 EUR 30cm\n"
+								+ "18.99 EUR 42cm\n"
+								
 							+"\nFerrara: "
 								+ "\nCīsiņi, mocarella, kūpināts bekons, tomāti, auksti\n"
 								+ "kausēts kūpinātais siers, Cēzara mērce, pētersīļi,\n"
 								+ "picas mērce, eļļas un ķiploku mērce, oregano\n"
+								+ "12.99 EUR 30cm\n"
+								+ "16.99 EUR 42cm\n"
+								
 							,"Edienkarte:", JOptionPane.QUESTION_MESSAGE ,null, gatavaspicas, gatavaspicas[0]);
 					if(izvele == null)
 						izvele = "Atgriezties";
 					switch(izvele) {
 					case "Studentu":
-						Picas.add("Studentu");
-						String piedevas = "Vārīts cūkgaļas šķiņķis, cīsiņi, mocarella";
-						int izmers = Integer.parseInt((String) JOptionPane.showInputDialog(null, 
+						piedevas = "\nVārīts cūkgaļas šķiņķis, cīsiņi, \n"
+								+ "mocarella, picas mērce, \neļļas un ķiploku mērce, oregano\n";
+						izmers = Integer.parseInt((String) JOptionPane.showInputDialog(null, 
 								"Izvēlieties picas izmēru:"
 								+ "\n30\n42", "Picas izmērs",
 								JOptionPane.QUESTION_MESSAGE, null, pizm, pizm[0]));
-						String merce = (String) JOptionPane.showInputDialog(null, 
+						
+						merce = (String) JOptionPane.showInputDialog(null, 
 								"Vai vēlaties pievienot kādu papildus mērci?"
-								+ "\nĶiploku mērce\nGurķu mērce\nBBQ mērce\nVai nekādu?", 
-								"Papildus mērce", JOptionPane.QUESTION_MESSAGE);
+							+ "\nĶiploku mērce 0.99 EUR\nGurķu mērce 0.99 EUR\nBBQ mērce 0.99 EUR\nVai nekādu?", 
+								"Papildus mērce", JOptionPane.QUESTION_MESSAGE, null, merces, merces[3]);
+						if(merce == null)
+							merce = "Nekādu";
+						cena += (izmers == 30) ? 13.99 : 17.99;
+						if(!merce.equals("Nekādu")) {
+							cena += 0.99;
+						}
+						cena = Math.round(cena * 100.0) / 100.0;
+						Pica Studentu = new Pica(false, piedevas, izmers, cena, merce, uzVietas);
+						JOptionPane.showMessageDialog(null, 
+								"Jūsu pasūtījums:\n"+Studentu.PicasApr(), 
+								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
+						Picas.add("Studentu");
 						break;
+					case "Pepperoni":
+						piedevas = "\nSalami \"Pepperoni\", mocarella, kūpināts kausētais siers, \n"
+								+ "\"Taco\" mērce, sīpolu čipsi, rukola, picas mērce, "
+								+ "\neļļas un ķiploku mērce, oregano\n";
+						izmers = Integer.parseInt((String) JOptionPane.showInputDialog(null, 
+								"Izvēlieties picas izmēru:"
+								+ "\n30\n42", "Picas izmērs",
+								JOptionPane.QUESTION_MESSAGE, null, pizm, pizm[0]));
+						
+						merce = (String) JOptionPane.showInputDialog(null, 
+								"Vai vēlaties pievienot kādu papildus mērci?"
+							+ "\nĶiploku mērce 0.99 EUR\nGurķu mērce 0.99 EUR\nBBQ mērce 0.99 EUR\nVai nekādu?", 
+								"Papildus mērce", JOptionPane.QUESTION_MESSAGE, null, merces, merces[3]);
+						if(merce == null)
+							merce = "Nekādu";
+						cena += (izmers == 30) ? 13.99 : 17.99;
+						if(!merce.equals("Nekādu")) {
+							cena += 0.99;
+						}
+						
+						Pica Pepperoni = new Pica(false, piedevas, izmers, cena, merce, uzVietas);
+						JOptionPane.showMessageDialog(null, 
+								"Jūsu pasūtījums:\n"+Pepperoni.PicasApr(), 
+								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
+						Picas.add("Pepperoni");
 					}
 					break;
 				case "Pašu taisīta":
