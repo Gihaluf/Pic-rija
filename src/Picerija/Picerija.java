@@ -56,10 +56,10 @@ public class Picerija {
 	public static void main(String[] args) {
 		Queue<String> Picas = new LinkedList<>();
 		
-		String izvele, vards, piedevas, merce;
+		String izvele, vards, piedevas, merce, dzeriens, uzkoda;
 		int izmers;
 		String[] darbibas = {"Pasūtīt picu", "Apskatīt pasūtījumus", "Apturēt"};
-		String[] darbibas1 = {"Gatavās picas",/* "Pašu taisīta",*/"Atgriezties"};
+		String[] darbibas1 = {"Gatavās picas","Pašu taisīta", "Atgriezties"};
 		String[] gatavaspicas = {"Studentu", "Pepperoni", "Havaju", "Ferrara"};
 		String[] pizm = {"30", "42"};
 		String[] merces = {"Ķiploku", "Gurķu", "BBQ", "Nekādu"};
@@ -135,7 +135,7 @@ public class Picerija {
 							,"Edienkarte:", JOptionPane.QUESTION_MESSAGE ,null, gatavaspicas, gatavaspicas[0]);
 					if(izvele == null)
 						izvele = "Atgriezties";
-					String dzeriens = (String) JOptionPane.showInputDialog(null, 
+					dzeriens = (String) JOptionPane.showInputDialog(null, 
 							"Vai vēlaties pievienot dzērienu jūsu pasūtījumam?"
 							+ "\nCoca-Cola 0.5L - 1.70 EUR"
 							+ "\nFanta 0.5L - 1.70 EUR"
@@ -162,14 +162,13 @@ public class Picerija {
 						break;
 					}
 	
-					String uzkoda = (String) JOptionPane.showInputDialog(null, 
+					uzkoda = (String) JOptionPane.showInputDialog(null, 
 							"Vai vēlaties pievienot uzkodu jūsu pasūtījumam?"
 							+ "\nŠokolādes kūka 6.50 EUR"
 							+ "\nŠokolādes saldējums ar mērci 2.50 EUR"
 							+ "\nŠokolādes saldējuma koktēlis 5.00 EUR", 
 							"Uzkodas", JOptionPane.QUESTION_MESSAGE, null, 
 							uzkodas, uzkodas[3]);
-					System.out.println(uzkoda);
 					switch(uzkoda) {
 					case "Šokolādes kūka":
 						cena += 6.50;
@@ -292,10 +291,84 @@ public class Picerija {
 					
 					break;
 				case "Pašu taisīta":
+					izmers = Integer.parseInt((String) JOptionPane.showInputDialog(null, 
+							"Izvēlieties picas izmēru:"
+							+ "\n30\n42", "Picas izmērs",
+							JOptionPane.QUESTION_MESSAGE, null, pizm, pizm[0]));
+					do {
+						izvele = virknesParbaude("Lūdzu, ievadiet jūsu picai piedevas:"
+								+ "\nX, ja vēlaties atgriezties", "Siļķis");
+						if(izvele == null) {
+							izvele = "x";
+							break;
+						}
+						piedevas += izvele + ", ";
+						cena += 0.50;
+						
+					}while(!izvele.equalsIgnoreCase("x"));
+					
+					dzeriens = (String) JOptionPane.showInputDialog(null, 
+							"Vai vēlaties pievienot dzērienu jūsu pasūtījumam?"
+							+ "\nCoca-Cola 0.5L - 1.70 EUR"
+							+ "\nFanta 0.5L - 1.70 EUR"
+							+ "\nSprite 0.5L - 1.70 EUR"
+							+ "\nŪdens 0.5L - 1.00 EUR"
+							+ "\nTēja 0.5L - 1.50 EUR", 
+							"Dzērieni", JOptionPane.QUESTION_MESSAGE, null, 
+							dzert, dzert[2]);
+					switch(dzeriens) {
+					case "Coca-Cola":
+						cena += 1.70;
+						break;
+					case "Fanta":
+						cena += 1.70;
+						break;
+					case "Sprite":
+						cena += 1.70;
+						break;
+					case "Ūdens":
+						cena += 1.00;
+						break;
+					case "Tēja":
+						cena += 1.50;
+						break;
+					}
+	
+					uzkoda = (String) JOptionPane.showInputDialog(null, 
+							"Vai vēlaties pievienot uzkodu jūsu pasūtījumam?"
+							+ "\nŠokolādes kūka 6.50 EUR"
+							+ "\nŠokolādes saldējums ar mērci 2.50 EUR"
+							+ "\nŠokolādes saldējuma koktēlis 5.00 EUR", 
+							"Uzkodas", JOptionPane.QUESTION_MESSAGE, null, 
+							uzkodas, uzkodas[3]);
+					switch(uzkoda) {
+					case "Šokolādes kūka":
+						cena += 6.50;
+						break;
+					case "Šokolādes saldējums ar mērci":
+						cena += 2.50;
+						break;
+					case "Šokolādes saldējuma koktēlis":
+						cena += 5.00;
+						break;	
+					}
+					
+					merce = (String) JOptionPane.showInputDialog(null, 
+							"Vai vēlaties pievienot kādu papildus mērci?"
+						+ "\nĶiploku mērce 0.99 EUR\nGurķu mērce 0.99 EUR\nBBQ mērce 0.99 EUR\nVai nekādu?", 
+							"Papildus mērce", JOptionPane.QUESTION_MESSAGE, null, merces, merces[3]);
+					if(merce == null)
+						merce = "Nekādu";
+					cena += (izmers == 30) ? 13.99 : 17.99;
+					if(!merce.equals("Nekādu")) {
+						cena += 0.99;
+					}
+					cena = Math.round(cena * 100.0) / 100.0;
+					Pica pasu = new Pica(vards, false, piedevas, izmers, cena, merce, uzVietas, dzeriens, uzkoda);
 					JOptionPane.showMessageDialog(null, 
-							"Šī funkcija vēl nav izveidota.", 
-							"Paziņojums", JOptionPane.INFORMATION_MESSAGE);
-					break;
+							"Jūsu pasūtījums:\n"+pasu.PicasApr(), 
+							"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
+					Picas.add("Pica");
 				}
 				break;
 			}
