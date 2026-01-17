@@ -1,5 +1,6 @@
 package Picerija;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.regex.Pattern;
@@ -54,7 +55,8 @@ public class Picerija {
 		return virkne;
 	}
 	public static void main(String[] args) {
-		Queue<String> Picas = new LinkedList<>();
+		Queue<Pica> Picas = new LinkedList<>();
+		ArrayList<Pica> PabeigtasPicas = new ArrayList<>();
 		
 		String izvele, vards, piedevas, merce, dzeriens, uzkoda;
 		int izmers;
@@ -66,9 +68,11 @@ public class Picerija {
 		String[] atbildes = {"Jā", "Nē"};
 		String[] dzert = {"Coca-Cola", "Fanta", "Sprite", "Ūdens", "Tēja", "Nekādu"};
 		String[] uzkodas = {"Šokolādes kūka", "Šokolādes saldējums ar mērci", "Šokolādes saldējuma koktēlis", "Nekādu"};
+		String[] pas = {"Aktīvos", "Pabeigtos", "Atgriezties"};
 		double cena = 0;
 		boolean uzVietas;
 		do {
+			System.out.println(Picas.size());
 			izvele = (String) JOptionPane.showInputDialog(null, "Izvēlieties darbību:\n"
 					+ "Pasūtīt picu\n"
 					+ "Apskatīt pasūtījumus\n"
@@ -205,8 +209,8 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Studentu.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
-						Picas.add("Studentu");
-						Teksts.Ieraksta(Studentu);
+						Picas.add(Studentu);
+						
 						break;
 						
 					case "Pepperoni":
@@ -233,7 +237,8 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Pepperoni.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
-						Picas.add("Pepperoni");
+						Picas.add(Pepperoni);
+						
 						break;
 						
 					case "Havaju":
@@ -259,7 +264,8 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Havaju.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
-						Picas.add("Havaju");
+						Picas.add(Havaju);
+						Teksts.Ieraksta(Havaju);
 						break;
 						
 					case "Ferrara":
@@ -286,7 +292,8 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Ferrara.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
-						Picas.add("Ferrara");
+						Picas.add(Ferrara);
+						
 						break;
 					}
 					
@@ -299,13 +306,17 @@ public class Picerija {
 					do {
 						izvele = virknesParbaude("Lūdzu, ievadiet jūsu picai piedevas:"
 								+ "\nX, ja vēlaties atgriezties", "Siļķis");
-						if(izvele == null) {
+						if(izvele == null|| izvele.equalsIgnoreCase("x")) {
 							izvele = "x";
 							break;
+						}else {
+							if(piedevas.equals(""))
+								piedevas = izvele;
+							else {
+								piedevas += ", "+izvele;
+								cena += 0.50;
+							}
 						}
-						piedevas += izvele + ", ";
-						cena += 0.50;
-						
 					}while(!izvele.equalsIgnoreCase("x"));
 					
 					dzeriens = (String) JOptionPane.showInputDialog(null, 
@@ -365,16 +376,38 @@ public class Picerija {
 						cena += 0.99;
 					}
 					cena = Math.round(cena * 100.0) / 100.0;
-					Pica pasu = new Pica(vards, false, piedevas, izmers, cena, merce, uzVietas, dzeriens, uzkoda);
+					Pica Pasu = new Pica(vards, false, piedevas, izmers, cena, merce, uzVietas, dzeriens, uzkoda);
 					JOptionPane.showMessageDialog(null, 
-							"Jūsu pasūtījums:\n"+pasu.PicasApr(), 
+							"Jūsu pasūtījums:\n"+Pasu.PicasApr(), 
 							"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
-					Picas.add("Pica");
+					Picas.add(Pasu);
+					
 				}
 				break;
 				
 				case "Apskatīt pasūtījumus":
-					
+					izvele = (String) JOptionPane.showInputDialog(null, 
+							"Kādus pasūtījumus apskatīt:\n"
+							+ "Aktīvos\n"
+							+ "Pabeigtos\n"
+							+ "Atgriezties","Izvēle", JOptionPane.QUESTION_MESSAGE ,null, pas, pas[0]);
+					if(izvele == "Atgriezties" || izvele == null) {
+						izvele = "Atgriezties";
+						break;
+					}
+					switch(izvele) {
+					case "Aktīvos":
+						for(Pica pasutijums : Picas) {
+							Teksts.Ieraksta(pasutijums);
+						}
+						Teksts.nolasit();
+						Teksts.Iztira();
+						break;
+					case "Pabeigtos":
+						Teksts.nolasit();
+						break;
+					}
+					break;
 			}
 		}while(!izvele.equals("Apturēt"));
 	}

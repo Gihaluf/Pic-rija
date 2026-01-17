@@ -21,6 +21,18 @@ public class Teksts {
 			FileWriter fw = new FileWriter(failaN, true);
 			PrintWriter pw = new PrintWriter(fw);
 			pw.println(pica.PicasApr());
+			pw.println("------------------");
+			pw.close();
+		}catch(IOException e) {
+			JOptionPane.showMessageDialog(null, "Nesaglabā failā", "Kļūda",
+					JOptionPane.WARNING_MESSAGE);
+		}
+	}
+	static void Iztira() {
+		try {
+			FileWriter fw = new FileWriter(failaN, false);
+			PrintWriter pw = new PrintWriter(fw);
+			pw.println("");
 			pw.close();
 		}catch(IOException e) {
 			JOptionPane.showMessageDialog(null, "Nesaglabā failā", "Kļūda",
@@ -42,7 +54,7 @@ public class Teksts {
 			JScrollPane sp = new JScrollPane(ta);
 			sp.setVerticalScrollBarPolicy(
 					ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-			JOptionPane.showMessageDialog(ta, sp, "Atzīmes",
+			JOptionPane.showMessageDialog(ta, sp, "Aktīvie pasūtījumi",
 					JOptionPane.PLAIN_MESSAGE);
 			
 		}catch(IOException e){
