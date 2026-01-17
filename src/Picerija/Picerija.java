@@ -206,6 +206,7 @@ public class Picerija {
 								"Jūsu pasūtījums:\n"+Studentu.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
 						Picas.add("Studentu");
+						Teksts.Ieraksta(Studentu);
 						break;
 						
 					case "Pepperoni":
