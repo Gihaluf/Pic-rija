@@ -81,7 +81,7 @@ public class Picerija {
 				izvele = (String) JOptionPane.showInputDialog(null, 
 						"Izvēlieties darbību:\n"
 						+ "Gatavās picas\n"
-						//+ "Pašu taisīta\n"
+						+ "Pašu taisīta\n"
 						+ "Atgriezties","Izvēle", JOptionPane.QUESTION_MESSAGE ,null, darbibas1, darbibas1[0]);
 				if(izvele == "Atgriezties" || izvele == null) {
 					izvele = "Atgriezties";
@@ -371,6 +371,9 @@ public class Picerija {
 					Picas.add("Pica");
 				}
 				break;
+				
+				case "Apskatīt pasūtījumus":
+					
 			}
 		}while(!izvele.equals("Apturēt"));
 	}
