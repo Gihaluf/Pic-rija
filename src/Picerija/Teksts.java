@@ -21,6 +21,7 @@ public class Teksts {
 			FileWriter fw = new FileWriter(failaN, true);
 			PrintWriter pw = new PrintWriter(fw);
 			pw.println(pica.PicasApr());
+			pw.println("-------------------------------------------");
 			pw.close();
 		}catch(IOException e) {
 			JOptionPane.showMessageDialog(null, "Nesaglabā failā", "Kļūda",
