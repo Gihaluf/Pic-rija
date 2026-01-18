@@ -12,4 +12,3 @@
 - [x] Piegādes cena
 - [x] Saglabāt / nolasīt pasūtījumu vēsturi
 - [x] Izmantot OOP principus
-- [ ] Uzglabāt adresi, tālruni, vādu personai
