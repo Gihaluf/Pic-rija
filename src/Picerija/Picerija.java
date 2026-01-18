@@ -112,6 +112,7 @@ public class Picerija {
 				long pasLaiks = Laiki.peek();
 				long tagLaiks = System.currentTimeMillis();
 				if((tagLaiks - pasLaiks) >= 30000) {
+					Picas.peek().setGatava(true);
 					PabeigtasPicas.add(Picas.poll());
 					Laiki.poll();
 					reize++;
