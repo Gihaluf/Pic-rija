@@ -1,10 +1,22 @@
 package Picerija;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.regex.Pattern;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class Picerija {
@@ -20,6 +32,19 @@ public class Picerija {
  Izmantot OOP principus
  Uzglabāt adresi, tālruni, vādu personai
  */
+	
+	public static void secr() throws MalformedURLException, 
+	            UnsupportedAudioFileException, IOException, 
+	            LineUnavailableException {
+				File f = new File("Bildes//nom.wav");
+	            Clip c;
+		        AudioInputStream ais = AudioSystem.getAudioInputStream(f);
+	            c = AudioSystem.getClip();
+	            c.open(ais);
+	            c.start();
+	            
+		     
+	    }
 	public static int skaitlaParbaude(String zinojums, double min, double max, String noklusejums) {
 		String ievade;
 		int skaitlis;
@@ -54,8 +79,10 @@ public class Picerija {
 		}while(!Pattern.matches("^[\\p{L} .]+$", virkne));
 		return virkne;
 	}
+	static int reize = 0;
 	public static void main(String[] args) {
 		Queue<Pica> Picas = new LinkedList<>();
+		Queue<Long> Laiki = new LinkedList<>();
 		ArrayList<Pica> PabeigtasPicas = new ArrayList<>();
 		
 		String izvele, vards, piedevas, merce, dzeriens, uzkoda;
@@ -72,7 +99,60 @@ public class Picerija {
 		double cena = 0;
 		boolean uzVietas;
 		do {
-			System.out.println(Picas.size());
+			JFrame panel = new JFrame();
+			ImageIcon icon = new ImageIcon("Bildes/mail.gif");
+			
+			JLabel gif = new JLabel(icon);
+			ImageIcon bild = new ImageIcon("Bildes/pica.png");
+			
+			JLabel pic = new JLabel(bild);
+			JButton poga = new JButton("Apēst");
+			
+			for(int i = 0; i < Picas.size(); i++) {
+				long pasLaiks = Laiki.peek();
+				long tagLaiks = System.currentTimeMillis();
+				if((tagLaiks - pasLaiks) >= 30000) {
+					PabeigtasPicas.add(Picas.poll());
+					Laiki.poll();
+					reize++;
+					
+					panel.add(gif);
+					panel.setSize(500, 500);
+					panel.setLocationRelativeTo(null);
+					panel.setUndecorated(true);
+					panel.setVisible(true);
+					
+					try {
+						Thread.sleep(4000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					panel.remove(gif);
+					
+					poga.setBounds(200, 400, 100, 30);
+					panel.add(poga);
+					
+					panel.add(pic);
+					panel.revalidate();
+					panel.repaint();
+					poga.addActionListener(e -> {
+						panel.dispose();
+						try {
+							secr();
+						} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+							e1.printStackTrace();
+						}
+					});
+					
+				}
+			}
+			if(reize != 0) 
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			reize = 0;
 			izvele = (String) JOptionPane.showInputDialog(null, "Izvēlieties darbību:\n"
 					+ "Pasūtīt picu\n"
 					+ "Apskatīt pasūtījumus\n"
@@ -209,6 +289,7 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Studentu.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
+						Laiki.add(System.currentTimeMillis());
 						Picas.add(Studentu);
 						
 						break;
@@ -237,6 +318,7 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Pepperoni.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
+						Laiki.add(System.currentTimeMillis());
 						Picas.add(Pepperoni);
 						
 						break;
@@ -264,8 +346,9 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Havaju.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
+						Laiki.add(System.currentTimeMillis());
 						Picas.add(Havaju);
-						Teksts.Ieraksta(Havaju);
+						
 						break;
 						
 					case "Ferrara":
@@ -292,6 +375,7 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Ferrara.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
+						Laiki.add(System.currentTimeMillis());
 						Picas.add(Ferrara);
 						
 						break;
@@ -380,6 +464,7 @@ public class Picerija {
 					JOptionPane.showMessageDialog(null, 
 							"Jūsu pasūtījums:\n"+Pasu.PicasApr(), 
 							"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
+					Laiki.add(System.currentTimeMillis());
 					Picas.add(Pasu);
 					
 				}
@@ -404,7 +489,11 @@ public class Picerija {
 						Teksts.Iztira();
 						break;
 					case "Pabeigtos":
+						for(Pica pasutijums : PabeigtasPicas) {
+							Teksts.Ieraksta(pasutijums);
+						}
 						Teksts.nolasit();
+						Teksts.Iztira();
 						break;
 					}
 					break;

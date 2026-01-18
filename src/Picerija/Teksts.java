@@ -32,7 +32,7 @@ public class Teksts {
 		try {
 			FileWriter fw = new FileWriter(failaN, false);
 			PrintWriter pw = new PrintWriter(fw);
-			pw.println("");
+			pw.print("");
 			pw.close();
 		}catch(IOException e) {
 			JOptionPane.showMessageDialog(null, "Nesaglabā failā", "Kļūda",
@@ -54,7 +54,7 @@ public class Teksts {
 			JScrollPane sp = new JScrollPane(ta);
 			sp.setVerticalScrollBarPolicy(
 					ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-			JOptionPane.showMessageDialog(ta, sp, "Aktīvie pasūtījumi",
+			JOptionPane.showMessageDialog(ta, sp, "Pasūtījumi",
 					JOptionPane.PLAIN_MESSAGE);
 			
 		}catch(IOException e){
