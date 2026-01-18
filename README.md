@@ -3,13 +3,13 @@
 
  **Kas vajadzīgs:**
 
-- [ ] Izveidot, ka var pasūtīt picas un uzkodas, kā arī dzērienus
-  - [ ] Picas lielums
-  - [ ] Piedevas
-  - [ ] Mērces
-- [ ] Apskatīt aktīvos / pabeigtos pasūtījumus
-- [ ] Aprēķināt cenu
-- [ ] Piegādes cena
-- [ ] Saglabāt / nolasīt pasūtījumu vēsturi
-- [ ] Izmantot OOP principus
+- [x] Izveidot, ka var pasūtīt picas un uzkodas, kā arī dzērienus
+  - [x] Picas lielums
+  - [x] Piedevas
+  - [x] Mērces
+- [x] Apskatīt aktīvos / pabeigtos pasūtījumus
+- [x] Aprēķināt cenu
+- [x] Piegādes cena
+- [x] Saglabāt / nolasīt pasūtījumu vēsturi
+- [x] Izmantot OOP principus
 - [ ] Uzglabāt adresi, tālruni, vādu personai
