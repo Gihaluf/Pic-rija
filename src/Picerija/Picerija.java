@@ -1,9 +1,22 @@
 package Picerija;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.regex.Pattern;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class Picerija {
@@ -19,6 +32,19 @@ public class Picerija {
  Izmantot OOP principus
  Uzglabāt adresi, tālruni, vādu personai
  */
+	
+	public static void secr() throws MalformedURLException, 
+	            UnsupportedAudioFileException, IOException, 
+	            LineUnavailableException {
+				File f = new File("Bildites//nom.wav");
+	            Clip c;
+		        AudioInputStream ais = AudioSystem.getAudioInputStream(f);
+	            c = AudioSystem.getClip();
+	            c.open(ais);
+	            c.start();
+	            
+		     
+	    }
 	public static int skaitlaParbaude(String zinojums, double min, double max, String noklusejums) {
 		String ievade;
 		int skaitlis;
@@ -53,8 +79,11 @@ public class Picerija {
 		}while(!Pattern.matches("^[\\p{L} .]+$", virkne));
 		return virkne;
 	}
+	static int reize = 0;
 	public static void main(String[] args) {
-		Queue<String> Picas = new LinkedList<>();
+		Queue<Pica> Picas = new LinkedList<>();
+		Queue<Long> Laiki = new LinkedList<>();
+		ArrayList<Pica> PabeigtasPicas = new ArrayList<>();
 		
 		String izvele, vards, piedevas, merce, dzeriens, uzkoda;
 		int izmers;
@@ -66,9 +95,65 @@ public class Picerija {
 		String[] atbildes = {"Jā", "Nē"};
 		String[] dzert = {"Coca-Cola", "Fanta", "Sprite", "Ūdens", "Tēja", "Nekādu"};
 		String[] uzkodas = {"Šokolādes kūka", "Šokolādes saldējums ar mērci", "Šokolādes saldējuma koktēlis", "Nekādu"};
+		String[] pas = {"Aktīvos", "Pabeigtos", "Atgriezties"};
 		double cena = 0;
 		boolean uzVietas;
 		do {
+			JFrame panel = new JFrame();
+			ImageIcon icon = new ImageIcon("Bildites/mail.gif");
+			
+			JLabel gif = new JLabel(icon);
+			ImageIcon bild = new ImageIcon("Bildites/pica.png");
+			
+			JLabel pic = new JLabel(bild);
+			JButton poga = new JButton("Apēst");
+			
+			for(int i = 0; i < Picas.size(); i++) {
+				long pasLaiks = Laiki.peek();
+				long tagLaiks = System.currentTimeMillis();
+				if((tagLaiks - pasLaiks) >= 30000) {
+					Picas.peek().setGatava(true);
+					PabeigtasPicas.add(Picas.poll());
+					Laiki.poll();
+					reize++;
+					
+					panel.add(gif);
+					panel.setSize(500, 500);
+					panel.setLocationRelativeTo(null);
+					panel.setUndecorated(true);
+					panel.setVisible(true);
+					
+					try {
+						Thread.sleep(4000);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					panel.remove(gif);
+					
+					poga.setBounds(200, 400, 100, 30);
+					panel.add(poga);
+					
+					panel.add(pic);
+					panel.revalidate();
+					panel.repaint();
+					poga.addActionListener(e -> {
+						panel.dispose();
+						try {
+							secr();
+						} catch (UnsupportedAudioFileException | IOException | LineUnavailableException e1) {
+							e1.printStackTrace();
+						}
+					});
+					
+				}
+			}
+			if(reize != 0) 
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			reize = 0;
 			izvele = (String) JOptionPane.showInputDialog(null, "Izvēlieties darbību:\n"
 					+ "Pasūtīt picu\n"
 					+ "Apskatīt pasūtījumus\n"
@@ -205,8 +290,9 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Studentu.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
-						Picas.add("Studentu");
-						Teksts.Ieraksta(Studentu);
+						Laiki.add(System.currentTimeMillis());
+						Picas.add(Studentu);
+						
 						break;
 						
 					case "Pepperoni":
@@ -233,7 +319,9 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Pepperoni.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
-						Picas.add("Pepperoni");
+						Laiki.add(System.currentTimeMillis());
+						Picas.add(Pepperoni);
+						
 						break;
 						
 					case "Havaju":
@@ -259,7 +347,9 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Havaju.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
-						Picas.add("Havaju");
+						Laiki.add(System.currentTimeMillis());
+						Picas.add(Havaju);
+						
 						break;
 						
 					case "Ferrara":
@@ -286,7 +376,9 @@ public class Picerija {
 						JOptionPane.showMessageDialog(null, 
 								"Jūsu pasūtījums:\n"+Ferrara.PicasApr(), 
 								"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
-						Picas.add("Ferrara");
+						Laiki.add(System.currentTimeMillis());
+						Picas.add(Ferrara);
+						
 						break;
 					}
 					
@@ -299,13 +391,17 @@ public class Picerija {
 					do {
 						izvele = virknesParbaude("Lūdzu, ievadiet jūsu picai piedevas:"
 								+ "\nX, ja vēlaties atgriezties", "Siļķis");
-						if(izvele == null) {
+						if(izvele == null|| izvele.equalsIgnoreCase("x")) {
 							izvele = "x";
 							break;
+						}else {
+							if(piedevas.equals(""))
+								piedevas = izvele;
+							else {
+								piedevas += ", "+izvele;
+								cena += 0.50;
+							}
 						}
-						piedevas += izvele + ", ";
-						cena += 0.50;
-						
 					}while(!izvele.equalsIgnoreCase("x"));
 					
 					dzeriens = (String) JOptionPane.showInputDialog(null, 
@@ -365,16 +461,43 @@ public class Picerija {
 						cena += 0.99;
 					}
 					cena = Math.round(cena * 100.0) / 100.0;
-					Pica pasu = new Pica(vards, false, piedevas, izmers, cena, merce, uzVietas, dzeriens, uzkoda);
+					Pica Pasu = new Pica(vards, false, piedevas, izmers, cena, merce, uzVietas, dzeriens, uzkoda);
 					JOptionPane.showMessageDialog(null, 
-							"Jūsu pasūtījums:\n"+pasu.PicasApr(), 
+							"Jūsu pasūtījums:\n"+Pasu.PicasApr(), 
 							"Pasūtījuma apstiprinājums", JOptionPane.INFORMATION_MESSAGE);
-					Picas.add("Pica");
+					Laiki.add(System.currentTimeMillis());
+					Picas.add(Pasu);
+					
 				}
 				break;
 				
 				case "Apskatīt pasūtījumus":
-					
+					izvele = (String) JOptionPane.showInputDialog(null, 
+							"Kādus pasūtījumus apskatīt:\n"
+							+ "Aktīvos\n"
+							+ "Pabeigtos\n"
+							+ "Atgriezties","Izvēle", JOptionPane.QUESTION_MESSAGE ,null, pas, pas[0]);
+					if(izvele == "Atgriezties" || izvele == null) {
+						izvele = "Atgriezties";
+						break;
+					}
+					switch(izvele) {
+					case "Aktīvos":
+						for(Pica pasutijums : Picas) {
+							Teksts.Ieraksta(pasutijums);
+						}
+						Teksts.nolasit();
+						Teksts.Iztira();
+						break;
+					case "Pabeigtos":
+						for(Pica pasutijums : PabeigtasPicas) {
+							Teksts.Ieraksta(pasutijums);
+						}
+						Teksts.nolasit();
+						Teksts.Iztira();
+						break;
+					}
+					break;
 			}
 		}while(!izvele.equals("Apturēt"));
 	}
